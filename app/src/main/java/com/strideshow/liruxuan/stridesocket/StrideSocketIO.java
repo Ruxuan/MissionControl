@@ -17,10 +17,12 @@ public class StrideSocketIO {
     // Singleton
     private static StrideSocketIO instance = null;
 
-    private String serverAddr = "http://1bccb136.ngrok.io/demo";
+    private String serverAddr = "http://f7a6d21a.ngrok.io/demo";
 
-    private String socketId;
-    private Socket socket;
+    private String socketId = null;
+    private Socket socket = null;
+
+    public String room = null;
 
     /*
     Singleton getInstance()
@@ -86,6 +88,7 @@ public class StrideSocketIO {
     Request a room
      */
     public void requestRoom(String room) {
+        this.room = room;
         JSONObject j = new JSONObject();
 
         try {
