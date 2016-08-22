@@ -11,12 +11,14 @@
         android:layout_marginBottom="20dp"
         android:layout_marginLeft="2dp"
         android:layout_marginRight="2dp"
-        android:text="Projects" />
+        android:text="Grid Fragment Header" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/gridRecyclerView"
         android:scrollbars="none"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:paddingBottom="100dp"
+        android:clipToPadding="false" />
 
 </LinearLayout>

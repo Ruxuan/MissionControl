@@ -3,10 +3,12 @@ package com.strideshow.liruxuan.projectsgrid;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridLayout;
 
 import com.strideshow.liruxuan.ApiClient.ApiClient;
 import com.strideshow.liruxuan.ApiClient.ApiInterface;
@@ -14,8 +16,10 @@ import com.strideshow.liruxuan.missioncontrolcenter.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -28,13 +32,21 @@ import retrofit2.Response;
 public class GridFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
+    private RecyclerView.Adapter mAdapter = null;
+    private GridLayoutManager mLayoutManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.grid_fragment, container, false);
 
+        setupRecyclerView(view);
+        requestData();
+
+        return view;
+    }
+
+
+    private void setupRecyclerView(View view) {
         // Get recycler view
         mRecyclerView = (RecyclerView) view.findViewById(R.id.gridRecyclerView);
 
@@ -44,8 +56,27 @@ public class GridFragment extends Fragment {
 
         // use a grid layout manager
         mLayoutManager = new GridLayoutManager(getContext(), 2);
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        mLayoutManager.setSpanSizeLookup(
+            new GridLayoutManager.SpanSizeLookup() {
+                @Override
+                public int getSpanSize(int position) {
+                    switch(mAdapter.getItemViewType(position)) {
+                        case GridAdapter.SECTION:
+                            return 2;
+                        case GridAdapter.FOLDER:
+                        case GridAdapter.PROJECT:
+                            return 1;
+                        default:
+                            return -1;
+                    }
+                }
+            }
+        );
 
+        mRecyclerView.setLayoutManager(mLayoutManager);
+    }
+
+    private void requestData() {
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<ResponseBody> call = apiService.getProjects();
         call.enqueue(new Callback<ResponseBody>() {
@@ -59,16 +90,14 @@ public class GridFragment extends Fragment {
                         mAdapter = new GridAdapter(projects);
                         mRecyclerView.setAdapter(mAdapter);
                     } catch (IOException e) {
-                        System.out.println("fucked up");
                         System.out.println(e.getMessage());
                         e.printStackTrace();
                     } catch (JSONException e) {
-                        System.out.println("Could not parse json");
                         System.out.println(e.getMessage());
                         e.printStackTrace();
                     }
                 } else {
-                    System.out.println("Failed");
+                    System.out.println("Response was unsuccessful");
                 }
             }
 
@@ -77,9 +106,5 @@ public class GridFragment extends Fragment {
                 System.out.println(t.getMessage());
             }
         });
-
-        // TODO: recycler view grid manage
-
-        return view;
     }
 }
