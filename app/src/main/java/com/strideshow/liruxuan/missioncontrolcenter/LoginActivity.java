@@ -32,6 +32,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         /*
+        TODO: if user logged in then redirect to his/her page
          StrideSocketIO.getInstance().requestRoom(
                         editTextRoom.getText().toString());
          */
