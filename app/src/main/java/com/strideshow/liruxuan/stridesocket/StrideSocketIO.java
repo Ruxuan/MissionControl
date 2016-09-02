@@ -1,5 +1,7 @@
 package com.strideshow.liruxuan.stridesocket;
 
+import android.support.v7.widget.LinearLayoutCompat;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -17,12 +19,11 @@ public class StrideSocketIO {
     // Singleton
     private static StrideSocketIO instance = null;
 
-    private String serverAddr = "http://f7a6d21a.ngrok.io/demo";
+    private String serverAddr = "http://ee8f5ec2.ngrok.io/demo";
 
-    private String socketId = null;
     private Socket socket = null;
 
-    public String room = null;
+    public String roomKey = null;
 
     /*
     Singleton getInstance()
@@ -73,13 +74,7 @@ public class StrideSocketIO {
         socket.on("respondRoom", new Emitter.Listener() {
             @Override
             public void call(final Object... args) {
-                JSONObject j = (JSONObject) args[0];
-
-                try {
-                    socketId = j.getString("room");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                System.out.println("successfully connected");
             }
         });
     }
@@ -87,12 +82,12 @@ public class StrideSocketIO {
     /*
     Request a room
      */
-    public void requestRoom(String room) {
-        this.room = room;
+    public void requestRoom(String roomKey) {
+        this.roomKey = roomKey;
         JSONObject j = new JSONObject();
 
         try {
-            j.put("roomKey", room);
+            j.put("roomKey", roomKey);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -110,19 +105,7 @@ public class StrideSocketIO {
     Send next command for ImpressJS
      */
     public void next() {
-        if (socketId == null) {
-            System.out.println("Socket id doesn't exist yet");
-            return;
-        }
-
-        JSONObject j = new JSONObject();
-        try {
-            j.put("room", socketId);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        socket.emit("next", j, new Ack() {
+        socket.emit("next", new Ack() {
             @Override
             public void call(Object... args) {
                 System.out.println("Server received NEXT command");
@@ -134,19 +117,7 @@ public class StrideSocketIO {
     Send prev command for ImpressJS
      */
     public void prev() {
-        if (socketId == null) {
-            System.out.println("Socket id doesn't exist yet");
-            return;
-        }
-
-        JSONObject j = new JSONObject();
-        try {
-            j.put("room", socketId);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        socket.emit("prev", j, new Ack() {
+        socket.emit("prev", new Ack() {
             @Override
             public void call(Object... args) {
                 System.out.println("Server received PREV command");
@@ -160,13 +131,9 @@ public class StrideSocketIO {
     Notes: I couldn't name it "goto" b/c it's a reserved keyword in Java
      */
     public void impressGoto(int slideIndex) {
-        if (socketId == null) {
-            System.out.println("Socket id doesn't exist yet");
-        }
 
         JSONObject j = new JSONObject();
         try {
-            j.put("room", socketId);
             j.put("slideIndex", slideIndex);
         } catch(JSONException e) {
             e.printStackTrace();
@@ -176,6 +143,26 @@ public class StrideSocketIO {
             @Override
             public void call(Object... args) {
                 System.out.println("Server received GOTO command");
+            }
+        });
+    }
+
+    /*
+    Send laser pointer info
+     */
+    public void laserPointer(float ratioX, float ratioY) {
+
+        JSONObject j = new JSONObject();
+        try {
+            j.put("ratioX", ratioX);
+            j.put("ratioY", ratioY);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        socket.emit("laserPointer", j, new Ack() {
+            @Override
+            public void call(Object... args) {
+                System.out.println("Server received laserPointer command");
             }
         });
     }

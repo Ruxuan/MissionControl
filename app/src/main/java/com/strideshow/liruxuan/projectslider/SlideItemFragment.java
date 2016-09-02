@@ -16,12 +16,14 @@ public class SlideItemFragment extends Fragment {
 
     private String title;
     private int page;
+    private int count;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         page  = getArguments().getInt("page");
-        title = getArguments().getString("title");
+        count = getArguments().getInt("count");
+        //title = getArguments().getString("title");
     }
 
     @Override
@@ -29,7 +31,7 @@ public class SlideItemFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_slide_item, container, false);
 
         TextView tv = (TextView) view.findViewById(R.id.index);
-        tv.setText("Data: " + page + " -- " + title);
+        tv.setText("Data: " + page + " -- " + count);
 
         return view;
     }

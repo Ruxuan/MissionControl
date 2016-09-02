@@ -17,7 +17,8 @@ import com.strideshow.liruxuan.stridesocket.StrideSocketIO;
 public class SocketMenu extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.socket_menu, container, false);
+        View view = inflater.inflate(R.layout.socket_menu_fragment, container, false);
+        view.setClickable(false);
 
         Button socketRoomKeyButton = (Button) view.findViewById(R.id.socketRoomButton);
         final EditText socketRoomKeyEditText = (EditText) view.findViewById(R.id.socketRoomEditText);
@@ -25,7 +26,6 @@ public class SocketMenu extends Fragment {
         socketRoomKeyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("socket button clicked");
                 String roomKey = socketRoomKeyEditText.getText().toString();
                 StrideSocketIO.getInstance().requestRoom(roomKey);
             }
