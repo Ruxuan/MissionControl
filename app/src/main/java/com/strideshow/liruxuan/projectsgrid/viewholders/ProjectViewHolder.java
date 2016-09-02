@@ -12,13 +12,22 @@ import com.strideshow.liruxuan.missioncontrolcenter.R;
  */
 public class ProjectViewHolder extends RecyclerView.ViewHolder {
 
-    private CardView mCardView;
+    public CardView mCardView;
     private TextView mTextView;
 
     public ProjectViewHolder(View v) {
         super(v);
         mCardView = (CardView) v;
         mTextView = (TextView) v.findViewById(R.id.info_text);
+
+        /*mCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v.getContext();
+                System.out.println("hasdfasdf");
+            }
+        });*/
+
     }
 
     public TextView getTextView() {

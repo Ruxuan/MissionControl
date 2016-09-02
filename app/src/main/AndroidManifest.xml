@@ -28,6 +28,9 @@
             android:name="com.strideshow.liruxuan.missioncontrol.MissionControlActivity"
             android:theme="@style/AppTheme"></activity>
 
+        <activity android:name="com.strideshow.liruxuan.projectslider.SlideActivity"
+            android:theme="@style/AppTheme"></activity>
+
     </application>
 
 </manifest>

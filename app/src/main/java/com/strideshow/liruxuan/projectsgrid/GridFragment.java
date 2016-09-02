@@ -6,6 +6,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
@@ -74,6 +75,10 @@ public class GridFragment extends Fragment {
         );
 
         mRecyclerView.setLayoutManager(mLayoutManager);
+
+        // TODO: Empty adapter, update as soon as data is received
+        mAdapter = new GridAdapter(getContext(), new JSONArray());
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     private void requestData() {
@@ -87,7 +92,7 @@ public class GridFragment extends Fragment {
                         String body = response.body().string();
                         JSONArray projects = new JSONArray(body);
 
-                        mAdapter = new GridAdapter(projects);
+                        mAdapter = new GridAdapter(getContext(), projects);
                         mRecyclerView.setAdapter(mAdapter);
                     } catch (IOException e) {
                         System.out.println(e.getMessage());

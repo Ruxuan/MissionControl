@@ -3,6 +3,7 @@ package com.strideshow.liruxuan.missioncontrol;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -29,8 +30,6 @@ public class MissionControlActivity extends AppCompatActivity {
     FragmentManager fragmentManager = getSupportFragmentManager();
     SocketMenu socketMenu = null;
 
-    MissionControlAdapter slidePagerAdapter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,20 +40,13 @@ public class MissionControlActivity extends AppCompatActivity {
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-
-        // View Pager
-        ViewPager viewPager = (ViewPager) findViewById(R.id.missionControlActivityView);
-        slidePagerAdapter   = new MissionControlAdapter(fragmentManager);
-        viewPager.setAdapter(slidePagerAdapter);
-
-
-        /*// Open the main fragment for mission control
+        // Open the main fragment for mission control
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         // Mission control grid container is the main fragment
         GridFragment fragment = new GridFragment();
         fragmentTransaction.add(R.id.missionControlActivityView, fragment);
-        fragmentTransaction.commit();*/
+        fragmentTransaction.commit();
     }
 
 
@@ -64,7 +56,6 @@ public class MissionControlActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
             case R.id.socketRoom:
-                //Toast.makeText(this, "Socket Room Selected", Toast.LENGTH_SHORT).show();
 
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
@@ -103,5 +94,4 @@ public class MissionControlActivity extends AppCompatActivity {
 
         return true;
     }
-
 }

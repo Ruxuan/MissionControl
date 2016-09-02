@@ -67,7 +67,7 @@ public class SplashScreen extends AppCompatActivity {
 
         Intent intent = new Intent(this, LoginActivity.class);
         // Pass server data
-        intent.putExtra("appData", appData);
+        //intent.putExtra("appData", appData);
         // start Main activity
         startActivity(intent);
     }
@@ -88,28 +88,6 @@ public class SplashScreen extends AppCompatActivity {
         protected HashMap doInBackground(Void... params) {
             HashMap<String, String> data = new HashMap<>();
 
-            // Setup api call
-            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            Call<ResponseBody> call = apiService.getProjects();
-
-            Response<ResponseBody> response = null;
-            String projects = null;
-
-            try {
-                // Execute the sync call
-                response = call.execute();
-
-                // If call is successful
-                if (response != null && response.isSuccessful() && response.code() == 200) {
-                    projects = response.body().string();
-                } else {
-                    System.out.println("Request Failed");
-                }
-            } catch(IOException e) {
-                System.out.println("No internet connection");
-            }
-
-            data.put("projects", projects);
             return data;
         }
 

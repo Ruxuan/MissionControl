@@ -13,7 +13,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Set theme to app main theme
-        setTheme(R.style.AppTheme);
+        //setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
 
         // Content View
@@ -25,7 +25,6 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Go to Mission control activity
-                // TODO: ask for demo room
                 Intent toDemo = new Intent(view.getContext(), MissionControlActivity.class);
                 startActivity(toDemo);
             }

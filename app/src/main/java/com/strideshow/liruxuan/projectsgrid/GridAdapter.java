@@ -1,14 +1,25 @@
 package com.strideshow.liruxuan.projectsgrid;
 
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.strideshow.liruxuan.missioncontrolcenter.R;
 import com.strideshow.liruxuan.projectsgrid.viewholders.FolderViewHolder;
 import com.strideshow.liruxuan.projectsgrid.viewholders.ProjectViewHolder;
 import com.strideshow.liruxuan.projectsgrid.viewholders.SectionTitleViewHolder;
+import com.strideshow.liruxuan.projectslider.SlideActivity;
+//import com.strideshow.liruxuan.projectslider.SlideContainerFragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,14 +31,21 @@ import java.util.ArrayList;
  * Created by Ruxuan on 8/11/2016.
  */
 public class GridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+    public static final String JSON_DATA = "JSON_DATA";
+
     private ArrayList<RecyclerObject> data = new ArrayList<>();
+
+    private Context context;
+    private FragmentManager fragmentManager;
 
     public static final int SECTION = 0;
     public static final int FOLDER  = 1;
     public static final int PROJECT = 2;
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public GridAdapter(JSONArray json) {
+    public GridAdapter(Context context, JSONArray json) {
+        this.context = context;
+        fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
 
         // TODO: temporary folder and section test
 
@@ -108,7 +126,7 @@ public class GridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
 
-        JSONObject recyclerJSON = data.get(position).getData();
+        final JSONObject recyclerJSON = data.get(position).getData();
 
         // TODO: create generic type to avoid casting?
         switch(holder.getItemViewType()) {
@@ -126,6 +144,30 @@ public class GridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                 String title = recyclerJSON.optJSONObject("meta_data").optString("title");
                 ProjectViewHolder pvh = (ProjectViewHolder) holder;
                 pvh.setTextView(title);
+                pvh.mCardView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        /*SlideContainerFragment s = new SlideContainerFragment();
+
+                        Bundle bundle = new Bundle();
+                        bundle.putString(JSON_DATA, recyclerJSON.toString());
+                        s.setArguments(bundle);*/
+
+                        Intent intent = new Intent(v.getContext(), SlideActivity.class);
+                        intent.putExtra(JSON_DATA, recyclerJSON.toString());
+                        v.getContext().startActivity(intent);
+                        /*FragmentTransaction ft = ((AppCompatActivity) context)
+                                .getSupportFragmentManager()
+                                .beginTransaction();
+
+                        ft.setTransition(ft.TRANSIT_FRAGMENT_FADE);
+
+                        ft.replace(R.id.missionControlActivityView, s)
+                                .addToBackStack(null)
+                                .commit();*/
+                    }
+                });
                 return;
             default:
                 return;
