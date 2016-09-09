@@ -19,6 +19,7 @@ import com.strideshow.liruxuan.projectsgrid.viewholders.FolderViewHolder;
 import com.strideshow.liruxuan.projectsgrid.viewholders.ProjectViewHolder;
 import com.strideshow.liruxuan.projectsgrid.viewholders.SectionTitleViewHolder;
 import com.strideshow.liruxuan.projectslider.SlideActivity;
+import com.strideshow.liruxuan.stridesocket.StrideSocketIO;
 //import com.strideshow.liruxuan.projectslider.SlideContainerFragment;
 
 import org.json.JSONArray;
@@ -35,17 +36,12 @@ public class GridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     private ArrayList<RecyclerObject> data = new ArrayList<>();
 
-    private Context context;
-    private FragmentManager fragmentManager;
-
     public static final int SECTION = 0;
     public static final int FOLDER  = 1;
     public static final int PROJECT = 2;
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public GridAdapter(Context context, JSONArray json) {
-        this.context = context;
-        fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
+    public GridAdapter(JSONArray json) {
 
         // TODO: temporary folder and section test
 
@@ -126,7 +122,7 @@ public class GridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
 
-        final JSONObject recyclerJSON = data.get(position).getData();
+        JSONObject recyclerJSON = data.get(position).getData();
 
         // TODO: create generic type to avoid casting?
         switch(holder.getItemViewType()) {
@@ -144,30 +140,7 @@ public class GridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                 String title = recyclerJSON.optJSONObject("meta_data").optString("title");
                 ProjectViewHolder pvh = (ProjectViewHolder) holder;
                 pvh.setTextView(title);
-                pvh.mCardView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        /*SlideContainerFragment s = new SlideContainerFragment();
-
-                        Bundle bundle = new Bundle();
-                        bundle.putString(JSON_DATA, recyclerJSON.toString());
-                        s.setArguments(bundle);*/
-
-                        Intent intent = new Intent(v.getContext(), SlideActivity.class);
-                        intent.putExtra(JSON_DATA, recyclerJSON.toString());
-                        v.getContext().startActivity(intent);
-                        /*FragmentTransaction ft = ((AppCompatActivity) context)
-                                .getSupportFragmentManager()
-                                .beginTransaction();
-
-                        ft.setTransition(ft.TRANSIT_FRAGMENT_FADE);
-
-                        ft.replace(R.id.missionControlActivityView, s)
-                                .addToBackStack(null)
-                                .commit();*/
-                    }
-                });
+                pvh.mCardView.setOnClickListener(new ProjectOnClickListener(recyclerJSON));
                 return;
             default:
                 return;
@@ -178,5 +151,22 @@ public class GridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     @Override
     public int getItemCount() {
         return data.size();
+    }
+
+    class ProjectOnClickListener implements View.OnClickListener {
+
+        private JSONObject projectData = null;
+
+        public ProjectOnClickListener(JSONObject projectData) {
+            this.projectData = projectData;
+        }
+
+        @Override
+        public void onClick(View v) {
+            // Go to SlideActivity
+            Intent intent = new Intent(v.getContext(), SlideActivity.class);
+            intent.putExtra(JSON_DATA, projectData.toString());
+            v.getContext().startActivity(intent);
+        }
     }
 }

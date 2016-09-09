@@ -77,7 +77,7 @@ public class GridFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // TODO: Empty adapter, update as soon as data is received
-        mAdapter = new GridAdapter(getContext(), new JSONArray());
+        mAdapter = new GridAdapter(new JSONArray());
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -92,7 +92,7 @@ public class GridFragment extends Fragment {
                         String body = response.body().string();
                         JSONArray projects = new JSONArray(body);
 
-                        mAdapter = new GridAdapter(getContext(), projects);
+                        mAdapter = new GridAdapter(projects);
                         mRecyclerView.setAdapter(mAdapter);
                     } catch (IOException e) {
                         System.out.println(e.getMessage());
