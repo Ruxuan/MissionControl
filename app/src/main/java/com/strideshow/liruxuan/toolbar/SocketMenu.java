@@ -1,5 +1,6 @@
 package com.strideshow.liruxuan.toolbar;
 
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,26 +12,37 @@ import android.widget.EditText;
 import com.strideshow.liruxuan.missioncontrolcenter.R;
 import com.strideshow.liruxuan.stridesocket.StrideSocketIO;
 
+import java.net.Socket;
+
 /**
  * Created by liruxuan on 2016-08-18.
  */
 public class SocketMenu extends Fragment {
+
+    EditText socketRoomKeyEditText;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.socket_menu_fragment, container, false);
         view.setClickable(false);
 
         Button socketRoomKeyButton = (Button) view.findViewById(R.id.socketRoomButton);
-        final EditText socketRoomKeyEditText = (EditText) view.findViewById(R.id.socketRoomEditText);
+        socketRoomKeyEditText = (EditText) view.findViewById(R.id.socketRoomEditText);
 
-        socketRoomKeyButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String roomKey = socketRoomKeyEditText.getText().toString();
-                StrideSocketIO.getInstance().requestRoom(roomKey);
-            }
-        });
+        socketRoomKeyButton.setOnClickListener(new SocketRoomKeyButtonListener());
 
         return view;
+    }
+
+    class SocketRoomKeyButtonListener implements View.OnClickListener {
+
+        StrideSocketIO strideSocketIO = StrideSocketIO.getInstance();
+
+        @Override
+        public void onClick(View v) {
+            String roomKey = socketRoomKeyEditText.getText().toString();
+
+            strideSocketIO.requestRoom(roomKey);
+        }
     }
 }
