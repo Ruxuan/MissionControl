@@ -1,10 +1,15 @@
 package com.strideshow.liruxuan.stridesocket;
 
+import android.content.pm.PackageInfo;
+import android.os.Build;
 import android.support.v7.widget.LinearLayoutCompat;
+
+import com.strideshow.liruxuan.missioncontrolcenter.BuildConfig;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Field;
 import java.net.URISyntaxException;
 
 import io.socket.client.Ack;
@@ -19,11 +24,16 @@ public class StrideSocketIO {
     // Singleton
     private static StrideSocketIO instance = null;
 
-    private String serverAddr = "http://ee8f5ec2.ngrok.io/demo";
+    private String serverAddr = "http://d9f67d82.ngrok.io/mobile";
 
+    // Socket IO socket object
     private Socket socket = null;
 
+    // StrideShow network information
+    // String inputted roomKey
     public String roomKey = null;
+    // String current active project
+    public int activeProject = -1;
 
     /*
     Singleton getInstance()
@@ -40,11 +50,8 @@ public class StrideSocketIO {
     Private Ctor
      */
     private StrideSocketIO() {
-        IO.Options opt = new IO.Options();
-        opt.query      = "reqRoom=false";
-
         try {
-            socket = IO.socket(serverAddr, opt);
+            socket = IO.socket(serverAddr);
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
@@ -88,6 +95,37 @@ public class StrideSocketIO {
 
         try {
             j.put("roomKey", roomKey);
+
+            // Mobile Device Info
+            JSONObject deviceInfo = new JSONObject();
+            deviceInfo.put("model", Build.MODEL);
+            deviceInfo.put("sdk", Build.VERSION.SDK_INT);
+            deviceInfo.put("os", "Android");
+
+            // Get name of android sdk version E.g. Android Nougat
+            Field[] fields = Build.VERSION_CODES.class.getFields();
+            for (Field field : fields) {
+                String fieldName = field.getName();
+                int fieldValue = -1;
+
+                try {
+                    fieldValue = field.getInt(new Object());
+                } catch (IllegalArgumentException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+
+                if (fieldValue == Build.VERSION.SDK_INT) {
+                    // Over write previous input
+                    deviceInfo.put("os", "Android " + fieldName);
+                }
+            }
+
+            // Send it with JSON
+            j.put("mobileDeviceInfo", deviceInfo);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -99,6 +137,27 @@ public class StrideSocketIO {
             }
         });
     }
+
+    /*
+    Sends active project to client
+     */
+    public void activeProject(int projectIndex) {
+        this.activeProject = projectIndex;
+
+        JSONObject j = new JSONObject();
+        try {
+            if (projectIndex == -1) {
+                j.put("mobileActiveProject", null);
+            } else {
+                j.put("mobileActiveProject", projectIndex);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        socket.emit("mobileActiveProject", j);
+    }
+
 
 
     /*

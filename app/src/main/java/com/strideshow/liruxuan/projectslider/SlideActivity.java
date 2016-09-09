@@ -32,8 +32,6 @@ public class SlideActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.mission_control_center_activity);
-
         // Get slideshow data
         try {
             data = new JSONObject(getIntent().getExtras().getString(GridAdapter.JSON_DATA));
@@ -41,6 +39,13 @@ public class SlideActivity extends AppCompatActivity {
             e.printStackTrace();
             data = new JSONObject();
         }
+
+        // Send active project to the server
+        int projectIndex = data.optJSONObject("meta_data").optInt("id");
+        StrideSocketIO.getInstance().activeProject(projectIndex);
+
+        // Set
+        setContentView(R.layout.mission_control_center_activity);
 
         // Setup viewpager
         viewPager = (ViewPager) findViewById(R.id.view_pager);
@@ -52,6 +57,14 @@ public class SlideActivity extends AppCompatActivity {
         //final ViewGroup projectTools = (ViewGroup) findViewById(R.id.projectToolsView);
         laserPointerView = (ImageView) findViewById(R.id.laserView);
         laserPointerView.setOnTouchListener(new LaserOnTouchListener());
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        // Send active project null to the server
+        StrideSocketIO.getInstance().activeProject(-1);
     }
 
     private boolean isViewOverlapping(View foregroundView, View backgroundView) {
