@@ -1,5 +1,7 @@
-package com.strideshow.liruxuan.projectslider;
+package com.strideshow.liruxuan.projectslider.projectviewpager;
 
+import android.content.Context;
+import android.os.Vibrator;
 import android.support.v4.view.ViewPager;
 import com.strideshow.liruxuan.stridesocket.StrideSocketIO;
 
@@ -24,10 +26,21 @@ public class SlidePagerPageChangeListener implements ViewPager.OnPageChangeListe
     private int newDirection = 0;
     private int newPosition  = 0;
 
+    // Context
+    Context context;
+
+    // Vibrator
+    Vibrator vibrator;
+
+    // Vibrate length
+    long vibrateLen = 50;
+
     StrideSocketIO strideSocketIO;
 
-    public SlidePagerPageChangeListener() {
+    public SlidePagerPageChangeListener(Context context) {
         super();
+        this.context = context;
+        this.vibrator = (Vibrator) this.context.getSystemService(Context.VIBRATOR_SERVICE);
         this.strideSocketIO = StrideSocketIO.getInstance();
     }
 
@@ -36,14 +49,24 @@ public class SlidePagerPageChangeListener implements ViewPager.OnPageChangeListe
         // Dragging
         if (sliderState == 1 && positionOffset != 0.0f) {
             if (THRESHOLD_OFFSET > positionOffset && newDirection != 1) {
+                // Update
                 newDirection = 1;
                 slidePosition++;
-                System.out.println("NEXT");
+
+                // Vibrator response
+                vibrator.vibrate(vibrateLen);
+
+                // Call stride sockets
                 this.strideSocketIO.next();
             } else if (THRESHOLD_OFFSET < positionOffset && newDirection != -1) {
+                // Update
                 newDirection = -1;
                 slidePosition--;
-                System.out.println("PREV");
+
+                // Vibrator response
+                vibrator.vibrate(vibrateLen);
+
+                // Call stride sockets
                 this.strideSocketIO.prev();
             }
         }
@@ -53,12 +76,20 @@ public class SlidePagerPageChangeListener implements ViewPager.OnPageChangeListe
             while (slidePosition != newPosition) {
                 if (slidePosition > newPosition) {
                     slidePosition--;
+
+                    // Vibrator response
+                    vibrator.vibrate(vibrateLen);
+
+                    // Stride socket call
                     this.strideSocketIO.prev();
-                    System.out.println("BACK LEFT");
                 } else {
                     slidePosition++;
+
+                    // Vibrator response
+                    vibrator.vibrate(vibrateLen);
+
+                    // Stride socket call
                     this.strideSocketIO.next();
-                    System.out.println("BACK RIGHT");
                 }
             }
 

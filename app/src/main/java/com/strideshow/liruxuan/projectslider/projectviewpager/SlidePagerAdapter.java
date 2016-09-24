@@ -1,4 +1,4 @@
-package com.strideshow.liruxuan.projectslider;
+package com.strideshow.liruxuan.projectslider.projectviewpager;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,11 +16,9 @@ import org.json.JSONObject;
 public class SlidePagerAdapter extends FragmentPagerAdapter {
     private JSONObject data = null;
 
-    public SlidePagerAdapter(FragmentManager fm, JSONObject data) {
+    public SlidePagerAdapter(FragmentManager fm, JSONObject projectData) {
         super(fm);
-        this.data = data;
-
-        // Create http req here to get slideshow json
+        this.data = projectData;
     }
 
     @Override
