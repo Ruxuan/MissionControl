@@ -1,25 +1,15 @@
 package com.strideshow.liruxuan.missioncontrol;
 
-import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.res.ResourcesCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.strideshow.liruxuan.projectsgrid.GridFragment;
-import com.strideshow.liruxuan.missioncontrolcenter.R;
-import com.strideshow.liruxuan.projectslider.SlidePagerAdapter;
 import com.strideshow.liruxuan.toolbar.SocketMenu;
 
 /**
@@ -38,7 +28,10 @@ public class MissionControlActivity extends AppCompatActivity {
         // Toolbar setup
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
 
         // Open the main fragment for mission control
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -48,7 +41,6 @@ public class MissionControlActivity extends AppCompatActivity {
         fragmentTransaction.add(R.id.missionControlActivityView, fragment);
         fragmentTransaction.commit();
     }
-
 
     // Menu Stuff****************************************************
 

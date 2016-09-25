@@ -1,4 +1,4 @@
-package com.strideshow.liruxuan.missioncontrolcenter;
+package com.strideshow.liruxuan.missioncontrol;
 
 import org.junit.Test;
 
