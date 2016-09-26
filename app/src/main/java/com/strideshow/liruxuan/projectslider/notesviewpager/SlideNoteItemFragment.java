@@ -7,12 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.strideshow.liruxuan.missioncontrolcenter.R;
-import com.strideshow.liruxuan.projectslider.notesviewpager.SlideNotePagerAdapter;
+import com.strideshow.liruxuan.missioncontrol.R;
 
 /**
  * Created by liruxuan on 2016-09-14.
  */
+
 public class SlideNoteItemFragment extends Fragment {
 
     private String note;

@@ -1,26 +1,16 @@
 package com.strideshow.liruxuan.projectsgrid;
 
-import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.strideshow.liruxuan.missioncontrolcenter.R;
+import com.strideshow.liruxuan.missioncontrol.R;
 import com.strideshow.liruxuan.projectsgrid.viewholders.FolderViewHolder;
 import com.strideshow.liruxuan.projectsgrid.viewholders.ProjectViewHolder;
 import com.strideshow.liruxuan.projectsgrid.viewholders.SectionTitleViewHolder;
 import com.strideshow.liruxuan.projectslider.SlideActivity;
-import com.strideshow.liruxuan.stridesocket.StrideSocketIO;
-//import com.strideshow.liruxuan.projectslider.SlideContainerFragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,7 +31,7 @@ public class GridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     public static final int PROJECT = 2;
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public GridAdapter(JSONArray json) {
+    public GridAdapter(JSONArray jsonArray) {
 
         // TODO: temporary folder and section test
 
@@ -55,9 +45,9 @@ public class GridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        data.add(new RecyclerObject(folder1, 1));
-        data.add(new RecyclerObject(folder2, 1));
-        data.add(new RecyclerObject(folder3, 1));
+        data.add(new RecyclerObject(folder1, FOLDER));
+        data.add(new RecyclerObject(folder2, FOLDER));
+        data.add(new RecyclerObject(folder3, FOLDER));
 
         JSONObject sectionJSONObject = new JSONObject();
         try {
@@ -65,16 +55,16 @@ public class GridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        data.add(new RecyclerObject(sectionJSONObject, 0));
+        data.add(new RecyclerObject(sectionJSONObject, SECTION));
 
-        // end TODO
+        // TODO: end of temporary folders
 
         // Compute appropriate data for recycler view
-        for (int i = 0; i < json.length(); i++) {
+        for (int i = 0; i < jsonArray.length(); i++) {
             // Get Json Object from array
-            JSONObject jsonObject = json.optJSONObject(i);
+            JSONObject jsonObject = jsonArray.optJSONObject(i);
             // Create a new recycler object with it
-            RecyclerObject projectObject = new RecyclerObject(jsonObject, 2);
+            RecyclerObject projectObject = new RecyclerObject(jsonObject, PROJECT);
             // Add it to the Recycler Object array
             data.add(projectObject);
         }
@@ -122,25 +112,25 @@ public class GridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
 
-        JSONObject recyclerJSON = data.get(position).getData();
+        JSONObject projectJSONObject = data.get(position).getData();
 
         // TODO: create generic type to avoid casting?
         switch(holder.getItemViewType()) {
             case SECTION:
-                String name = recyclerJSON.optString("name");
+                String name = projectJSONObject.optString("name");
                 SectionTitleViewHolder stvh = (SectionTitleViewHolder) holder;
                 stvh.setTextView(name);
                 return;
             case FOLDER:
-                String folderName = recyclerJSON.optString("folderName");
+                String folderName = projectJSONObject.optString("folderName");
                 FolderViewHolder fvh = (FolderViewHolder) holder;
                 fvh.setTextView(folderName);
                 return;
             case PROJECT:
-                String title = recyclerJSON.optJSONObject("meta_data").optString("title");
+                String title = projectJSONObject.optJSONObject("meta_data").optString("title");
                 ProjectViewHolder pvh = (ProjectViewHolder) holder;
                 pvh.setTextView(title);
-                pvh.mCardView.setOnClickListener(new ProjectOnClickListener(recyclerJSON));
+                pvh.mCardView.setOnClickListener(new ProjectOnClickListener(projectJSONObject));
                 return;
             default:
                 return;

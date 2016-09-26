@@ -3,24 +3,19 @@ package com.strideshow.liruxuan.projectsgrid;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridLayout;
 
 import com.strideshow.liruxuan.ApiClient.ApiClient;
 import com.strideshow.liruxuan.ApiClient.ApiInterface;
-import com.strideshow.liruxuan.missioncontrolcenter.R;
+import com.strideshow.liruxuan.missioncontrol.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -40,12 +35,14 @@ public class GridFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.grid_fragment, container, false);
 
+        // Grid recycler setup
         setupRecyclerView(view);
+
+        // Get data from the server
         requestData();
 
         return view;
     }
-
 
     private void setupRecyclerView(View view) {
         // Get recycler view

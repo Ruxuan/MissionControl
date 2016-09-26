@@ -5,9 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.strideshow.liruxuan.projectslider.SlideNoteItemFragment;
-
-import java.util.ArrayList;
+import org.json.JSONArray;
 
 /**
  * Created by liruxuan on 2016-09-14.
@@ -15,16 +13,16 @@ import java.util.ArrayList;
 public class SlideNotePagerAdapter extends FragmentPagerAdapter {
     public static final String NOTES = "NOTES";
 
-    private ArrayList<String> slideNotes;
+    private JSONArray projectSteps;
 
-    public SlideNotePagerAdapter(FragmentManager fm, ArrayList<String> slideNotes) {
+    public SlideNotePagerAdapter(FragmentManager fm, JSONArray projectSteps) {
         super(fm);
-        this.slideNotes = slideNotes;
+        this.projectSteps = projectSteps;
     }
 
     @Override
     public int getCount() {
-        return slideNotes.size();
+        return projectSteps.length();
     }
 
     @Override

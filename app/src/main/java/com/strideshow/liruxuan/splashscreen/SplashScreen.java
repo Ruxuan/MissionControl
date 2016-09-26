@@ -5,18 +5,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.strideshow.liruxuan.ApiClient.ApiInterface;
-import com.strideshow.liruxuan.ApiClient.ApiClient;
-import com.strideshow.liruxuan.missioncontrolcenter.LoginActivity;
+import com.strideshow.liruxuan.missioncontrol.LoginActivity;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Response;
 
 /**
  * Created by Ruxuan on 8/9/2016.

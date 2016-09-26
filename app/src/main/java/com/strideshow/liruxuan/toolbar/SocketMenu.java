@@ -1,6 +1,5 @@
 package com.strideshow.liruxuan.toolbar;
 
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,10 +8,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.strideshow.liruxuan.missioncontrolcenter.R;
+import com.strideshow.liruxuan.missioncontrol.R;
 import com.strideshow.liruxuan.stridesocket.StrideSocketIO;
-
-import java.net.Socket;
 
 /**
  * Created by liruxuan on 2016-08-18.

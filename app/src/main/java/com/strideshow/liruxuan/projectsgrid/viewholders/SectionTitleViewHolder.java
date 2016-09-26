@@ -4,7 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
-import com.strideshow.liruxuan.missioncontrolcenter.R;
+import com.strideshow.liruxuan.missioncontrol.R;
 
 /**
  * Created by liruxuan on 2016-08-17.

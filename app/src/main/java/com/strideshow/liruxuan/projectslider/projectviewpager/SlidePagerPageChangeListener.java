@@ -12,9 +12,6 @@ public class SlidePagerPageChangeListener implements ViewPager.OnPageChangeListe
     // Constant for offset
     private static final float THRESHOLD_OFFSET = 0.5f;
 
-    // Slideshow size
-    private int slideShowSize = 3;
-
     // Slideshow status variables
     private int sliderState   = 0;
     private int slidePosition = 0;
@@ -35,13 +32,12 @@ public class SlidePagerPageChangeListener implements ViewPager.OnPageChangeListe
     // Vibrate length
     long vibrateLen = 50;
 
-    StrideSocketIO strideSocketIO;
+    StrideSocketIO strideSocketIO = StrideSocketIO.getInstance();
 
     public SlidePagerPageChangeListener(Context context) {
         super();
-        this.context = context;
+        this.context  = context;
         this.vibrator = (Vibrator) this.context.getSystemService(Context.VIBRATOR_SERVICE);
-        this.strideSocketIO = StrideSocketIO.getInstance();
     }
 
     @Override

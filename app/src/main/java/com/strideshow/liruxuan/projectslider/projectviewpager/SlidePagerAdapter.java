@@ -5,8 +5,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.strideshow.liruxuan.projectslider.SlideItemFragment;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -14,6 +12,8 @@ import org.json.JSONObject;
  * Created by Ruxuan on 6/27/2016.
  */
 public class SlidePagerAdapter extends FragmentPagerAdapter {
+    public static final String STEP = "STEP";
+
     private JSONObject data = null;
 
     public SlidePagerAdapter(FragmentManager fm, JSONObject projectData) {
@@ -34,9 +34,21 @@ public class SlidePagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         Bundle args = new Bundle();
-        args.putInt("page", position);
 
+        args.putInt("page", position);
         args.putInt("count", getCount());
+
+        JSONObject step;
+        try {
+            step = data.getJSONObject("presentation")
+                    .getJSONArray("steps")
+                    .getJSONObject(position);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            step = new JSONObject();
+        }
+
+        args.putString(STEP, step.toString());
 
         SlideItemFragment slideItemFragment = new SlideItemFragment();
         slideItemFragment.setArguments(args);

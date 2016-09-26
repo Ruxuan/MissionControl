@@ -1,10 +1,6 @@
 package com.strideshow.liruxuan.stridesocket;
 
-import android.content.pm.PackageInfo;
 import android.os.Build;
-import android.support.v7.widget.LinearLayoutCompat;
-
-import com.strideshow.liruxuan.missioncontrolcenter.BuildConfig;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,7 +20,7 @@ public class StrideSocketIO {
     // Singleton
     private static StrideSocketIO instance = null;
 
-    private String serverAddr = "http://d9f67d82.ngrok.io/mobile";
+    private String serverAddr = "http://strideshow.me/mobile";
 
     // Socket IO socket object
     private Socket socket = null;
@@ -32,6 +28,7 @@ public class StrideSocketIO {
     // StrideShow network information
     // String inputted roomKey
     public String roomKey = null;
+
     // String current active project
     public int activeProject = -1;
 
@@ -52,12 +49,14 @@ public class StrideSocketIO {
     private StrideSocketIO() {
         try {
             socket = IO.socket(serverAddr);
+
+            socket.connect();
+            this.setSocketListeners();
+
         } catch (URISyntaxException e) {
+            socket = null;
             e.printStackTrace();
         }
-
-        socket.connect();
-        this.setSocketListeners();
     }
 
     private void setSocketListeners() {
@@ -142,6 +141,8 @@ public class StrideSocketIO {
     Sends active project to client
      */
     public void activeProject(int projectIndex) {
+        if (roomKey == null || socket == null) return;
+
         this.activeProject = projectIndex;
 
         JSONObject j = new JSONObject();
@@ -164,6 +165,8 @@ public class StrideSocketIO {
     Send next command for ImpressJS
      */
     public void next() {
+        if (roomKey == null  || socket == null) return;
+        // TODO: use goto
         socket.emit("next", new Ack() {
             @Override
             public void call(Object... args) {
@@ -176,6 +179,8 @@ public class StrideSocketIO {
     Send prev command for ImpressJS
      */
     public void prev() {
+        if (roomKey == null  || socket == null) return;
+        // TODO: use goto
         socket.emit("prev", new Ack() {
             @Override
             public void call(Object... args) {
@@ -190,6 +195,7 @@ public class StrideSocketIO {
     Notes: I couldn't name it "goto" b/c it's a reserved keyword in Java
      */
     public void impressGoto(int slideIndex) {
+        if (roomKey == null  || socket == null) return;
 
         JSONObject j = new JSONObject();
         try {
@@ -210,6 +216,7 @@ public class StrideSocketIO {
     Send laser pointer info
      */
     public void laserPointer(float ratioX, float ratioY) {
+        if (roomKey == null || socket == null) return;
 
         JSONObject j = new JSONObject();
         try {
