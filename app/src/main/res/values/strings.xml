@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">MissionControlCenter</string>
+    <string name="app_name">Mission Control</string>
     <string name="gridToProject">transitionToProject</string>
 </resources>

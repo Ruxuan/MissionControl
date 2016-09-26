@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.strideshow.liruxuan.missioncontrolcenter">
+    package="com.strideshow.liruxuan.missioncontrol">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -24,7 +24,7 @@
         </activity>
 
         <activity
-            android:name=".LoginActivity"
+            android:name="com.strideshow.liruxuan.missioncontrol.LoginActivity"
             android:theme="@style/AppTheme">
 
         </activity>

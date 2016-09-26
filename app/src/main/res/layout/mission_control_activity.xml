@@ -17,8 +17,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/orange"
-            android:text="Title" />
+            android:textColor="@color/colorPrimaryDark"
+            android:text="StrideShow Mission Control" />
 
     </android.support.v7.widget.Toolbar>
 
@@ -29,8 +29,7 @@
         <FrameLayout
             android:id="@+id/missionControlActivityView"
             android:layout_width="match_parent"
-            android:layout_height="fill_parent">
-        </FrameLayout>
+            android:layout_height="fill_parent" />
 
         <FrameLayout
             android:id="@+id/socketMenuContainerView"

@@ -12,27 +12,41 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="150dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:textSize="32dp"
+        android:textIsSelectable="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Mission Control Center"
+        android:text="Mission Control"
+        android:textSize="48dp"
         android:id="@+id/textView"
         android:layout_alignBottom="@+id/appTitle"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="36dp" />
+        android:layout_marginBottom="36dp"
+        android:textStyle="bold" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Demo"
+        android:text="Proceed to Demo"
         android:id="@+id/demoButton"
+        android:layout_marginBottom="131dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignEnd="@+id/appTitle"
-        android:layout_marginBottom="50dp"
-        android:layout_alignStart="@+id/appTitle" />
+        android:layout_alignEnd="@+id/textView2"
+        android:layout_alignStart="@+id/textView2" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="strideshow.me/demo"
+        android:id="@+id/textView2"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="37dp" />
 
 </RelativeLayout>
